@@ -1,5 +1,6 @@
 package com.github.dembinskid.ChessREST;
 
+import com.github.dembinskid.ChessREST.elements.Board;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChessRestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChessRestApplication.class, args);
+//		SpringApplication.run(ChessRestApplication.class, args);
+		Board board = new Board();
 	}
 
 }
