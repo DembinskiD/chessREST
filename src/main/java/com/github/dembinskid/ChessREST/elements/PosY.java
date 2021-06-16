@@ -1,6 +1,6 @@
 package com.github.dembinskid.ChessREST.elements;
 
-public enum FieldCoordY {
+public enum PosY {
     ONE(1),
     TWO(2),
     THREE(3),
@@ -12,7 +12,7 @@ public enum FieldCoordY {
 
     private int value;
 
-    private FieldCoordY(int value) {
+    private PosY(int value) {
         this.value = value;
     }
 
