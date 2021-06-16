@@ -1,4 +1,4 @@
-package com.github.dembinskid.ChessREST.elements;
+package com.github.dembinskid.ChessREST.elements.GameBoard;
 
 public enum PosY {
     ONE(1),

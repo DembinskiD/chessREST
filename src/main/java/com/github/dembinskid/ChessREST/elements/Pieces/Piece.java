@@ -1,8 +1,8 @@
 package com.github.dembinskid.ChessREST.elements.Pieces;
 
-import com.github.dembinskid.ChessREST.elements.PosX;
-import com.github.dembinskid.ChessREST.elements.PosY;
-import com.github.dembinskid.ChessREST.elements.Position;
+import com.github.dembinskid.ChessREST.elements.GameBoard.PosX;
+import com.github.dembinskid.ChessREST.elements.GameBoard.PosY;
+import com.github.dembinskid.ChessREST.elements.GameBoard.Position;
 import lombok.Data;
 
 @Data
