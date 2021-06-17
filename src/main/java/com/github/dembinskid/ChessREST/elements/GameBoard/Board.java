@@ -51,7 +51,7 @@ public class Board {
     }
 
     public void addPieceToBoard(Piece piece) {
-        this.board[piece.getPosition().getPosX().getValue()][piece.getPosition().getPosY().getValue()].setFree(false);
+        this.board[piece.getPosition().getPosX().getValue()][piece.getPosition().getPosY().getValue()].setTaken(true);
         this.board[piece.getPosition().getPosX().getValue()][piece.getPosition().getPosY().getValue()].setPiece(piece);
     }
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 public class Field {
     private Position position;
     private FieldColor fieldColor;
-    private boolean isFree;
     private boolean isTaken;
     private Piece piece;
 
@@ -15,12 +14,11 @@ public class Field {
         this.position = position;
         this.fieldColor = position.getPosX().getValue() + position.getPosY().getValue() % 2 == 0
                 ? FieldColor.BLACK : FieldColor.WHITE;
-        this.isFree = true;
-        this.isFree = false;
+        this.isTaken = false;
     }
 
     @Override
     public String toString() {
-        return isFree() ? position.getPosX().toString() + position.getPosY().toString() : piece.getPieceType().getShortName() + piece.getPieceColor().getShortName();
+        return isTaken() ? piece.getPieceType().getShortName() + piece.getPieceColor().getShortName() : position.getPosX().toString() + position.getPosY().toString();
     }
 }
