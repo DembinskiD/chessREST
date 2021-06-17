@@ -1,16 +1,21 @@
 package com.github.dembinskid.ChessREST.elements.GameBoard;
 
-import com.github.dembinskid.ChessREST.elements.Pieces.Piece;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceColor;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
-import com.sun.org.apache.xalan.internal.xsltc.dom.SingletonIterator;
+import com.sun.org.apache.xpath.internal.Arg;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardTest {
     Board board;
@@ -31,53 +36,35 @@ class BoardTest {
         assertEquals(64, this.fields.size());
     }
 
-    @Test
-    void testAmountOfPawns() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.PAWN)).forEach(this.outputList::add);
+    private static Stream<Arguments> provideParams() {
+        return Stream.of(
+                Arguments.of(16, PieceType.PAWN),
+                Arguments.of(2, PieceType.KING),
+                Arguments.of(2, PieceType.QUEEN),
+                Arguments.of(4, PieceType.ROOK),
+                Arguments.of(4, PieceType.KNIGHT),
+                Arguments.of(4, PieceType.BISHOP)
+        );
+    }
+
+    @ParameterizedTest(name = "Test for {1}")
+    @MethodSource("provideParams")
+    void testAmountOfPieces(int amount, PieceType pieceType) {
+        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(pieceType)).forEach(this.outputList::add);
+        assertEquals(amount, this.outputList.size());
+    }
+
+    private static Stream<Arguments> provideColorParams() {
+        return Stream.of(
+                Arguments.of(PieceColor.WHITE),
+                Arguments.of(PieceColor.BLACK)
+        );
+    }
+
+    @ParameterizedTest(name = "Test for {0}")
+    @MethodSource("provideColorParams")
+    void testAmountOfWhitePieces(PieceColor pieceColor) {
+        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceColor().equals(pieceColor)).forEach(outputList::add);
         assertEquals(16, this.outputList.size());
     }
-
-    @Test
-    void testAmountOfKings() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.KING)).forEach(outputList::add);
-        assertEquals(2, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfQueens() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.QUEEN)).forEach(outputList::add);
-        assertEquals(2, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfRooks() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.ROOK)).forEach(outputList::add);
-        assertEquals(4, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfKnights() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.KNIGHT)).forEach(outputList::add);
-        assertEquals(4, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfBishops() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(PieceType.BISHOP)).forEach(outputList::add);
-        assertEquals(4, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfWhitePieces() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceColor().equals(PieceColor.WHITE)).forEach(outputList::add);
-        assertEquals(16, this.outputList.size());
-    }
-
-    @Test
-    void testAmountOfBlackPieces() {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceColor().equals(PieceColor.BLACK)).forEach(outputList::add);
-        assertEquals(16, this.outputList.size());
-    }
-
-
 }
