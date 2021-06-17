@@ -8,6 +8,7 @@ public class Field {
     private Position position;
     private FieldColor fieldColor;
     private boolean isFree;
+    private boolean isTaken;
     private Piece piece;
 
     public Field(Position position) {
@@ -15,6 +16,7 @@ public class Field {
         this.fieldColor = position.getPosX().getValue() + position.getPosY().getValue() % 2 == 0
                 ? FieldColor.BLACK : FieldColor.WHITE;
         this.isFree = true;
+        this.isFree = false;
     }
 
     @Override

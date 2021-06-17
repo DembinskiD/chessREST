@@ -5,13 +5,9 @@ import com.github.dembinskid.ChessREST.elements.Pieces.PieceColor;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
 import lombok.Data;
 
-import java.util.ArrayList;
-
 @Data
 public class Board {
-    public Field[][] board = new Field[8][8];
-    private ArrayList<Piece> whitePieces;
-    private ArrayList<Piece> blackPieces;
+    private Field[][] board = new Field[8][8];
 
     public Board() {
         for (int x = 0; x < 8; x++) {
@@ -20,7 +16,6 @@ public class Board {
             }
         }
         initializeBoard();
-        printBoard();
     }
 
     public void printBoard() {
