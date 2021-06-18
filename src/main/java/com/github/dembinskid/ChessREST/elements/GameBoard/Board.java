@@ -5,6 +5,8 @@ import com.github.dembinskid.ChessREST.elements.Pieces.PieceColor;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
 public class Board {
     private Field[][] board = new Field[8][8];
@@ -27,19 +29,19 @@ public class Board {
         }
     }
 
-/*    public ArrayList<Position> getNeighbours(Position position, int distance) {
-        int minX = position.getPosX().getValue() == 1 ? position.getPosX().getValue() : position.getPosX().getValue()-1;
-        int maxX = position.getPosX().getValue() == 8 ? position.getPosX().getValue() : position.getPosX().getValue()+1;
-        int minY = position.getPosY().getValue() == 1 ? position.getPosY().getValue() : position.getPosY().getValue()-1;;
-        int maxY = position.getPosY().getValue() == 8 ? position.getPosY().getValue() : position.getPosY().getValue()+1;
+    public ArrayList<Position> getNeighbours(Position position) {
+        int minX = position.getPosX().getValue() == 0 ? position.getPosX().getValue() : position.getPosX().getValue()-1;
+        int maxX = position.getPosX().getValue() == 7 ? position.getPosX().getValue() : position.getPosX().getValue()+1;
+        int minY = position.getPosY().getValue() == 0 ? position.getPosY().getValue() : position.getPosY().getValue()-1;;
+        int maxY = position.getPosY().getValue() == 7 ? position.getPosY().getValue() : position.getPosY().getValue()+1;
         ArrayList<Position> neighboursList = new ArrayList<>();
         for(int x = minX; x <= maxX; x++) {
             for(int y = minY; y <= maxY; y++) {
-                if (board[x][y].isFree()) neighboursList.add(board[x][y].getPosition());
+                if (!board[x][y].isTaken()) neighboursList.add(board[x][y].getPosition());
             }
         }
         return neighboursList;
-    }*/
+    }
 
     public void initializeBoard() {
         for (PieceType type : PieceType.values()) {

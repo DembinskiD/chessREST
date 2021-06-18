@@ -3,7 +3,7 @@ package com.github.dembinskid.ChessREST.elements.Pieces;
 public enum PieceColor {
     WHITE("W"), BLACK("B");
 
-    private String shortName;
+    private final String shortName;
 
     PieceColor(String shortName) {
         this.shortName = shortName;

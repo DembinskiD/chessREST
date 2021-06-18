@@ -3,6 +3,7 @@ package com.github.dembinskid.ChessREST.elements.GameBoard;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceColor;
 import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
 import com.sun.org.apache.xpath.internal.Arg;
+import lombok.extern.log4j.Log4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,5 +68,11 @@ class BoardTest {
     void testAmountOfWhitePieces(PieceColor pieceColor) {
         this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceColor().equals(pieceColor)).forEach(outputList::add);
         assertEquals(16, this.outputList.size());
+    }
+
+    @Test
+    void testNeighborhoodFunction() {//todo zrobić parametry tutaj
+        Position position = new Position(0, 0);
+        assertEquals(this.board.getNeighbours(position).size(), 0);
     }
 }
