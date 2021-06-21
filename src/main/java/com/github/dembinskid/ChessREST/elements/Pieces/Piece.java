@@ -1,8 +1,5 @@
 package com.github.dembinskid.ChessREST.elements.Pieces;
 
-import com.github.dembinskid.ChessREST.elements.GameBoard.PosX;
-import com.github.dembinskid.ChessREST.elements.GameBoard.PosY;
-import com.github.dembinskid.ChessREST.elements.GameBoard.Position;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,9 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Piece {
     private PieceType pieceType;
-    private PosX initialPosX;
-    private PosY initialPosY;
-    private Position position;
+    private int initialPosX;
+    private int initialPosY;
     private PieceColor pieceColor;
 
 

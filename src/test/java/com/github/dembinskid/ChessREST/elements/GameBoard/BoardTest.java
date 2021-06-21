@@ -70,9 +70,22 @@ class BoardTest {
         assertEquals(16, this.outputList.size());
     }
 
-    @Test
-    void testNeighborhoodFunction() {//todo zrobić parametry tutaj
-        Position position = new Position(0, 0);
-        assertEquals(this.board.getNeighbours(position).size(), 0);
+    private static Stream<Arguments> neighbourHoodArguments() {
+        return Stream.of(
+                Arguments.of(new Field(0, 0), 0),
+                Arguments.of(new Field(3, 0), 0),
+                Arguments.of(new Field(0, 1), 2),
+                Arguments.of(new Field(1, 1), 3),
+                Arguments.of(new Field(0, 7), 0),
+                Arguments.of(new Field(0, 6), 2),
+                Arguments.of(new Field(1, 6), 3)
+        );
+    }
+
+    @ParameterizedTest()
+    @MethodSource("neighbourHoodArguments")
+    void testNeighborhoodFunction(Field field, int expectedValue) {
+        System.out.println(this.board.getNeighbours(field));
+        assertEquals(expectedValue, this.board.getNeighbours(field).size());
     }
 }

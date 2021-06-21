@@ -14,7 +14,7 @@ public class Board {
     public Board() {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                board[x][y] = new Field(new Position(PosX.values()[x].getValue(), PosY.values()[y].getValue()));
+                board[x][y] = new Field(x, y);
             }
         }
         initializeBoard();
@@ -29,15 +29,15 @@ public class Board {
         }
     }
 
-    public ArrayList<Position> getNeighbours(Position position) {
-        int minX = position.getPosX().getValue() == 0 ? position.getPosX().getValue() : position.getPosX().getValue()-1;
-        int maxX = position.getPosX().getValue() == 7 ? position.getPosX().getValue() : position.getPosX().getValue()+1;
-        int minY = position.getPosY().getValue() == 0 ? position.getPosY().getValue() : position.getPosY().getValue()-1;;
-        int maxY = position.getPosY().getValue() == 7 ? position.getPosY().getValue() : position.getPosY().getValue()+1;
-        ArrayList<Position> neighboursList = new ArrayList<>();
+    public ArrayList<Field> getNeighbours(Field field) {
+        int minX = field.getX() == 0 ? field.getX() : field.getX()-1;
+        int maxX = field.getX() == 7 ? field.getX() : field.getX()+1;
+        int minY = field.getY() == 0 ? field.getY() : field.getY()-1;
+        int maxY = field.getY() == 7 ? field.getY() : field.getY()+1;
+        ArrayList<Field> neighboursList = new ArrayList<>();
         for(int x = minX; x <= maxX; x++) {
             for(int y = minY; y <= maxY; y++) {
-                if (!board[x][y].isTaken()) neighboursList.add(board[x][y].getPosition());
+                if (!board[x][y].isTaken()) neighboursList.add(getFieldByCoordinates(x, y));
             }
         }
         return neighboursList;
@@ -45,15 +45,35 @@ public class Board {
 
     public void initializeBoard() {
         for (PieceType type : PieceType.values()) {
-            for (Position pos : type.getPositions()) {
-                PieceColor color = pos.getPosY().getValue() == 1 || pos.getPosY().getValue() == 0 ? PieceColor.WHITE : PieceColor.BLACK;
-                addPieceToBoard(new Piece(type, pos.getPosX(), pos.getPosY(), pos, color));
+            for (Field field : type.getFields()) {
+                PieceColor color = field.getY() == 1 || field.getY() == 0 ? PieceColor.WHITE : PieceColor.BLACK;
+                addPieceToBoard(new Piece(type, field.getX(), field.getY(), color));
             }
         }
     }
 
     public void addPieceToBoard(Piece piece) {
-        this.board[piece.getPosition().getPosX().getValue()][piece.getPosition().getPosY().getValue()].setTaken(true);
-        this.board[piece.getPosition().getPosX().getValue()][piece.getPosition().getPosY().getValue()].setPiece(piece);
+        this.board[piece.getInitialPosX()][piece.getInitialPosY()].setTaken(true);
+        this.board[piece.getInitialPosX()][piece.getInitialPosY()].setPiece(piece);
+    }
+
+
+        public boolean hasEnemyInFront(Field field) {
+        if (field.isTaken()) {
+            if ((field.getY() == 7 && field.getPiece().getPieceColor().equals(PieceColor.WHITE)) ||
+                    (field.getY() == 0 && field.getPiece().getPieceColor().equals(PieceColor.BLACK))) {
+                return false;
+            } else {
+                int yVal = field.getPiece().getPieceColor().equals(PieceColor.WHITE) ?
+                        field.getY() + 1 :
+                        field.getY() - 1;
+
+                return !this.board[field.getX()][yVal].isTaken();
+            }
+        }
+        return false;
+    }
+    public Field getFieldByCoordinates(int x, int y) {
+        return this.board[x][y];
     }
 }

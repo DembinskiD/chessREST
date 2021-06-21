@@ -5,20 +5,45 @@ import lombok.Data;
 
 @Data
 public class Field {
-    private Position position;
+    private int x;
+    private int y;
     private FieldColor fieldColor;
     private boolean isTaken;
     private Piece piece;
 
-    public Field(Position position) {
-        this.position = position;
-        this.fieldColor = position.getPosX().getValue() + position.getPosY().getValue() % 2 == 0
+    public Field(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.fieldColor = x + y % 2 == 0
                 ? FieldColor.BLACK : FieldColor.WHITE;
         this.isTaken = false;
     }
 
     @Override
     public String toString() {
-        return isTaken() ? piece.getPieceType().getShortName() + piece.getPieceColor().getShortName() : position.getPosX().toString() + position.getPosY().toString();
+        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
+    }
+
+    private String getLiteral(int x) {
+        String literal = "?";
+        switch(x) {
+            case 0: literal = "A";
+                break;
+            case 1: literal = "B";
+                break;
+            case 2: literal = "C";
+                break;
+            case 3: literal = "D";
+                break;
+            case 4: literal = "E";
+                break;
+            case 5: literal = "F";
+                break;
+            case 6: literal = "G";
+                break;
+            case 7: literal = "H";
+                break;
+        }
+        return literal;
     }
 }
