@@ -147,6 +147,4 @@ public enum PieceType {
         }
         return outputList;
     }
-
-
 }
