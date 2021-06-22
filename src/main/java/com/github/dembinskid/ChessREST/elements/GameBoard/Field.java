@@ -4,7 +4,7 @@ import com.github.dembinskid.ChessREST.elements.Pieces.Piece;
 import lombok.Data;
 
 @Data
-public class Field implements Comparable<Field>{
+public class Field implements Comparable<Field> {
     private int x;
     private int y;
     private FieldColor fieldColor;
