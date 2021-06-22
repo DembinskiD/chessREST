@@ -8,6 +8,8 @@ plugins {
     id "io.freefair.lombok" version "6.0.0-m2"
 }
 
+targetCompatibility = JavaVersion.VERSION_11;
+
 repositories {
     mavenLocal()
     maven {
@@ -24,7 +26,7 @@ dependencies {
 group = 'com.github.dembinskid'
 version = '0.0.1-SNAPSHOT'
 description = 'ChessREST'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_1_9
 
 publishing {
     publications {

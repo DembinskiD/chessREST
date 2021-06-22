@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @Data
 public class Board {
-    private Field[][] board = new Field[8][8];
+    private Field[][] board = new Field[8][8]; //todo przemyśleć rozwiązanie dla Field[](1 dimension)
 
     public Board() {
         for (int x = 0; x < 8; x++) {

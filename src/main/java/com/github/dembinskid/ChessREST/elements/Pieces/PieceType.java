@@ -4,6 +4,7 @@ import com.github.dembinskid.ChessREST.elements.GameBoard.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,6 +31,13 @@ public enum PieceType {
     QUEEN(new Field(3, 0), new Field(3, 7)) {
         @Override
         public String getShortName() { return "Q"; }
+        @Override
+        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
+            ArrayList<Field> outputList = new ArrayList<>(getInlineMoves(board, field));
+            outputList.addAll(getDiagonalMoves(board, field));
+            Collections.sort(outputList);
+            return outputList;
+        }
     },
     ROOK(new Field(0, 0), new Field(7, 0),
             new Field(0, 7), new Field(7, 7)) {
@@ -37,28 +45,34 @@ public enum PieceType {
         public String getShortName() { return "R"; }
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            ArrayList<Field> outputList = new ArrayList<>();
-            ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
-            ArrayList<Integer> listY = new ArrayList<>(listX);
-            listX.removeIf(p -> field.getX() == p);
-            listY.removeIf(p -> field.getY() == p);
-
-            for (int i = 0; i < listX.size(); i++) {
-                outputList.add(new Field(listX.get(i), listY.get(i)));
-            }
-            return outputList;
+            return getInlineMoves(board, field);
         }
     },
     BISHOP(new Field(2, 0), new Field(5, 0),
             new Field(2, 7), new Field(5, 7)) {
         @Override
         public String getShortName() { return "B"; }
+        @Override
+        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
+            return getDiagonalMoves(board, field);
+        }
     },
     KNIGHT(new Field(1, 0), new Field(6, 0),
             new Field(1, 7), new Field(6, 7)) {
         @Override
         public String getShortName() { return "S"; }
-    },
+        @Override
+        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
+            ArrayList<Field> outputList = new ArrayList<>();
+            Arrays.stream(new int[]{-1, 1}).forEach(x -> Arrays.stream(new int[]{-2, 2}).forEach(y -> {
+                if(!(field.getX() - x < 0 || field.getX() - x > 7 || field.getY() - y < 0 || field.getY() - y > 7))
+                    outputList.add(new Field(field.getX() - x, field.getY() - y));
+                if(!(field.getX() - y < 0 || field.getX() - y > 7 || field.getY() - x < 0 || field.getY() - x > 7))
+                    outputList.add(new Field(field.getX() - y, field.getY() - x));
+            }));
+            return outputList;
+        }
+        },
     PAWN {
         @Override
         public String getShortName() { return "P"; }
@@ -78,9 +92,7 @@ public enum PieceType {
 
     private ArrayList<Field> fields = new ArrayList<>();
     abstract public String getShortName();
-    public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-        return new ArrayList<>();
-    };
+    abstract public ArrayList<Field> getPossibleMoves(Board board, Field field);
 
     PieceType(Field... fields) {
         if(fields.length == 0) {
@@ -105,6 +117,35 @@ public enum PieceType {
 
     public ArrayList<Field> getFields() {
         return this.fields;
+    }
+
+    public ArrayList<Field> getInlineMoves(Board board, Field field) {
+        ArrayList<Field> outputList = new ArrayList<>();
+        ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listY = new ArrayList<>(listX);
+        listX.removeIf(p -> field.getX() == p);
+        listY.removeIf(p -> field.getY() == p);
+
+        for (int i = 0; i < listX.size(); i++) {
+            outputList.add(new Field(listX.get(i), listY.get(i)));
+        }
+        return outputList;
+    }
+
+    public ArrayList<Field> getDiagonalMoves(Board board, Field field) {
+        ArrayList<Field> outputList = new ArrayList<>();
+        ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listY = new ArrayList<>(listX);
+        listX.removeIf(p -> field.getX() == p);
+        listY.removeIf(p -> field.getY() == p);
+
+        for (int i = 0; i < listX.size(); i++) {
+            outputList.add(new Field(field.getX() + i, field.getY() + i));
+            outputList.add(new Field(field.getX() + i, field.getY() - i));
+            outputList.add(new Field(field.getX() - i, field.getY() + i));
+            outputList.add(new Field(field.getX() - i, field.getY() - i));
+        }
+        return outputList;
     }
 
 
