@@ -23,8 +23,8 @@ public class Field implements Comparable<Field> {
 
     @Override
     public String toString() {
-        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
-//        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : "[" + x + "," + y + "]";
+//        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
+        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : "[" + x + "," + y + "]";
     }
 
     private String getLiteral(int x) {

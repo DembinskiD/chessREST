@@ -119,7 +119,7 @@ public enum PieceType {
         return this.fields;
     }
 
-    public ArrayList<Field> getInlineMoves(Board board, Field field) {
+    public ArrayList<Field> getInlineMoves(Board board, Field field) { //todo ta metoda zwraca złe wartości, check it
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> listY = new ArrayList<>(listX);
@@ -127,7 +127,11 @@ public enum PieceType {
         listY.removeIf(p -> field.getY() == p);
 
         for (int i = 0; i < listX.size(); i++) {
-            outputList.add(new Field(listX.get(i), listY.get(i)));
+            outputList.add(new Field(listX.get(i), field.getY()));
+        }
+
+        for(int i = 0 ; i < listY.size(); i++) {
+            outputList.add(new Field(field.getX(), listY.get(i)));
         }
         return outputList;
     }
@@ -139,12 +143,16 @@ public enum PieceType {
         listX.removeIf(p -> field.getX() == p);
         listY.removeIf(p -> field.getY() == p);
 
-        for (int i = 0; i < listX.size(); i++) {
-            outputList.add(new Field(field.getX() + i, field.getY() + i));
-            outputList.add(new Field(field.getX() + i, field.getY() - i));
-            outputList.add(new Field(field.getX() - i, field.getY() + i));
-            outputList.add(new Field(field.getX() - i, field.getY() - i));
+        for (int i = 1; i < listX.size(); i++) {
+            if(fieldInBorder(field.getX() + i) && fieldInBorder(field.getY() + i)) outputList.add(new Field(field.getX() + i, field.getY() + i));
+            if(fieldInBorder(field.getX() + i) && fieldInBorder(field.getY() - i)) outputList.add(new Field(field.getX() + i, field.getY() - i));
+            if(fieldInBorder(field.getX() - i) && fieldInBorder(field.getY() + i)) outputList.add(new Field(field.getX() - i, field.getY() + i));
+            if(fieldInBorder(field.getX() - i) && fieldInBorder(field.getY() - i)) outputList.add(new Field(field.getX() - i, field.getY() - i));
         }
         return outputList;
+    }
+
+    private boolean fieldInBorder(int coordinate) {
+        return coordinate >= 0 && coordinate <= 7;
     }
 }
