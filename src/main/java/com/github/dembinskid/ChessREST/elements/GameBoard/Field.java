@@ -4,7 +4,7 @@ import com.github.dembinskid.ChessREST.elements.Pieces.Piece;
 import lombok.Data;
 
 @Data
-public class Field implements Comparable<Field>{
+public class Field implements Comparable<Field> {
     private int x;
     private int y;
     private FieldColor fieldColor;
@@ -23,8 +23,9 @@ public class Field implements Comparable<Field>{
 
     @Override
     public String toString() {
-        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
+//        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
 //        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : "[" + x + "," + y + "]";
+        return "[" + x + "," + y + "]";
     }
 
     private String getLiteral(int x) {
