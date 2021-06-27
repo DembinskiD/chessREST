@@ -17,19 +17,19 @@ class PieceTypeTest {
 
     private static Stream<Arguments> attributeProvider() {
         return Stream.of(
-                Arguments.of(PieceType.KNIGHT, new Field(1,0), List.of(new Field(2,2), new Field(0,2), new Field(3,1))),
-                Arguments.of(PieceType.KNIGHT, new Field(6,0), List.of(new Field(7,2), new Field(5,2), new Field(4,1))),
-                Arguments.of(PieceType.KNIGHT, new Field(3,6), List.of(new Field(1,7),
-                        new Field(1,5),
-                        new Field(2,4),
+                Arguments.of(PieceType.KNIGHT, new Field(1, 0), List.of(new Field(2, 2), new Field(0, 2), new Field(3, 1))),
+                Arguments.of(PieceType.KNIGHT, new Field(6, 0), List.of(new Field(7, 2), new Field(5, 2), new Field(4, 1))),
+                Arguments.of(PieceType.KNIGHT, new Field(3, 6), List.of(new Field(1, 7),
+                        new Field(1, 5),
+                        new Field(2, 4),
                         new Field(4, 4),
                         new Field(5, 5),
                         new Field(5, 7))),
-                Arguments.of(PieceType.PAWN, new Field(0,1), List.of(
-                        new Field(0,2),
-                        new Field(0,3)
+                Arguments.of(PieceType.PAWN, new Field(0, 1), List.of(
+                        new Field(0, 2),
+                        new Field(0, 3)
                 )),
-                Arguments.of(PieceType.PAWN, new Field(5,6), List.of(
+                Arguments.of(PieceType.PAWN, new Field(5, 6), List.of(
                         new Field(5, 5),
                         new Field(5, 4)
                 )),
@@ -58,37 +58,37 @@ class PieceTypeTest {
                         new Field(2, 6),
                         new Field(2, 7)
                 )),
-                Arguments.of(PieceType.QUEEN, new Field(1,1), List.of(
-                        new Field(2,2),
-                        new Field(0,2),
-                        new Field(3,3),
-                        new Field(4,4),
-                        new Field(5,5),
-                        new Field(7,7),
-                        new Field(1,0),
-                        new Field(2,0),
-                        new Field(1,2),
-                        new Field(1,3),
-                        new Field(1,4),
-                        new Field(1,5),
-                        new Field(1,6),
-                        new Field(1,7),
-                        new Field(0,1),
-                        new Field(2,1),
-                        new Field(3,1),
-                        new Field(5,1),
-                        new Field(0,0),
-                        new Field(6,1),
-                        new Field(6,6),
-                        new Field(4,1),
-                        new Field(7,1)
-                        )),
+                Arguments.of(PieceType.QUEEN, new Field(1, 1), List.of(
+                        new Field(2, 2),
+                        new Field(0, 2),
+                        new Field(3, 3),
+                        new Field(4, 4),
+                        new Field(5, 5),
+                        new Field(7, 7),
+                        new Field(1, 0),
+                        new Field(2, 0),
+                        new Field(1, 2),
+                        new Field(1, 3),
+                        new Field(1, 4),
+                        new Field(1, 5),
+                        new Field(1, 6),
+                        new Field(1, 7),
+                        new Field(0, 1),
+                        new Field(2, 1),
+                        new Field(3, 1),
+                        new Field(5, 1),
+                        new Field(0, 0),
+                        new Field(6, 1),
+                        new Field(6, 6),
+                        new Field(4, 1),
+                        new Field(7, 1)
+                )),
                 Arguments.of(PieceType.KING, new Field(4, 7), List.of(
-                        new Field(3,7),
-                        new Field(5,7),
-                        new Field(5,6),
-                        new Field(4,6),
-                        new Field(3,6)
+                        new Field(3, 7),
+                        new Field(5, 7),
+                        new Field(5, 6),
+                        new Field(4, 6),
+                        new Field(3, 6)
                 ))
         );
     }
@@ -96,9 +96,9 @@ class PieceTypeTest {
     @ParameterizedTest(name = "{0} on field {1} ")
     @MethodSource("attributeProvider")
     void getPossibleMoves(PieceType pieceType, Field field, List<Field> list) {
-        PieceType knight = pieceType;
+        PieceType pt = pieceType;
         Board board = new Board();
-        ArrayList<Field> outList = knight.getPossibleMoves(board, field);
+        ArrayList<Field> outList = pt.getPossibleMoves(board, field);
         ArrayList<Field> checkList = new ArrayList<>(list);
 
         Collections.sort(outList);
