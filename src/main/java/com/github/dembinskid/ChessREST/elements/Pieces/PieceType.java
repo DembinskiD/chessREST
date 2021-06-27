@@ -22,12 +22,11 @@ public enum PieceType {
             ArrayList<Field> outputList = new ArrayList<>();
             for (int x = field.getX() - 1; x <= field.getX() + 1; x++) {
                 for (int y = field.getY() - 1; y <= field.getY() + 1; y++) {
-                    if (fieldInBorder(x) && fieldInBorder(y)) {
                         outputList.add(new Field(x, y));
-                    }
                 }
             }
-            outputList.removeIf(x -> x.getX() == field.getX() && x.getY() == field.getY());
+            outputList.removeIf(x -> (x.getX() == field.getX() && x.getY() == field.getY())
+                    || (!fieldInBorder(x.getX()) || !fieldInBorder(x.getY())));
             return outputList;
         }
     },
