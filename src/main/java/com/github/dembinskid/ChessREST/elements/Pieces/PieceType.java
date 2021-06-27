@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 
 public enum PieceType {
-    KING(new Field(4, 0), new Field(4, 7)) {
+    KING(new Field(5, 1), new Field(5, 8)) {
         @Override
         public String getShortName() {
             return "K";
@@ -30,7 +30,7 @@ public enum PieceType {
             return outputList;
         }
     },
-    QUEEN(new Field(3, 0), new Field(3, 7)) {
+    QUEEN(new Field(4, 1), new Field(4, 8)) {
         @Override
         public String getShortName() {
             return "Q";
@@ -38,14 +38,14 @@ public enum PieceType {
 
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            ArrayList<Field> outputList = new ArrayList<>(getInlineMoves(board, field));
-            outputList.addAll(getDiagonalMoves(board, field));
+            ArrayList<Field> outputList = new ArrayList<>(getInlineMoves(field));
+            outputList.addAll(getDiagonalMoves(field));
             Collections.sort(outputList);
             return outputList;
         }
     },
-    ROOK(new Field(0, 0), new Field(7, 0),
-            new Field(0, 7), new Field(7, 7)) {
+    ROOK(new Field(1, 1), new Field(8, 1),
+            new Field(1, 8), new Field(8, 8)) {
         @Override
         public String getShortName() {
             return "R";
@@ -53,11 +53,11 @@ public enum PieceType {
 
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            return getInlineMoves(board, field);
+            return getInlineMoves(field);
         }
     },
-    BISHOP(new Field(2, 0), new Field(5, 0),
-            new Field(2, 7), new Field(5, 7)) {
+    BISHOP(new Field(3, 1), new Field(6, 1),
+            new Field(3, 8), new Field(6, 8)) {
         @Override
         public String getShortName() {
             return "B";
@@ -65,11 +65,11 @@ public enum PieceType {
 
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            return getDiagonalMoves(board, field);
+            return getDiagonalMoves(field);
         }
     },
-    KNIGHT(new Field(1, 0), new Field(6, 0),
-            new Field(1, 7), new Field(6, 7)) {
+    KNIGHT(new Field(2, 1), new Field(7, 1),
+            new Field(2, 8), new Field(7, 8)) {
         @Override
         public String getShortName() {
             return "S";
@@ -116,8 +116,8 @@ public enum PieceType {
     PieceType(Field... fields) {
         if (fields.length == 0) {
             ArrayList<Integer> xPos = new ArrayList<>();
-            xPos.add(1);
-            xPos.add(6);
+            xPos.add(2);
+            xPos.add(7);
             xPos.forEach(x -> fillPawns(x, this.fields));
 
         } else {
@@ -126,7 +126,7 @@ public enum PieceType {
     }
 
     private void fillPawns(int x, ArrayList<Field> pos) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i <= 8; i++) {
             pos.add(new Field(i, x));
         }
     }
@@ -139,7 +139,7 @@ public enum PieceType {
         return this.fields;
     }
 
-    public ArrayList<Field> getInlineMoves(Board board, Field field) { //todo ta metoda zwraca złe wartości, check it
+    public ArrayList<Field> getInlineMoves(Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> listY = new ArrayList<>(listX);
@@ -156,7 +156,7 @@ public enum PieceType {
         return outputList;
     }
 
-    public ArrayList<Field> getDiagonalMoves(Board board, Field field) {
+    public ArrayList<Field> getDiagonalMoves(Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> listY = new ArrayList<>(listX);

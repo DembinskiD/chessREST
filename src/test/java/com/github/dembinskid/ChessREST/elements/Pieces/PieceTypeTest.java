@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PieceTypeTest {
 
     private static Stream<Arguments> attributeProvider() {
-        return Stream.of(
+        return Stream.of( //todo sprawdzić argumenty dla sprawdzanych pól, nie powinny występować wartości 0
                 Arguments.of(PieceType.KNIGHT, new Field(1, 0), List.of(new Field(2, 2), new Field(0, 2), new Field(3, 1))),
                 Arguments.of(PieceType.KNIGHT, new Field(6, 0), List.of(new Field(7, 2), new Field(5, 2), new Field(4, 1))),
                 Arguments.of(PieceType.KNIGHT, new Field(3, 6), List.of(new Field(1, 7),
