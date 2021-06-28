@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,10 +21,9 @@ class BoardTest {
     @BeforeEach
     void init() {
         this.board = new Board();
-        this.fields = new ArrayList<>();
+        this.fields = new ArrayList<>(this.board.getBoard());
         this.outputList = new ArrayList<>();
         board.initializeBoard();
-        Arrays.stream(this.board.getBoard()).flatMap(Arrays::stream).forEach(x -> fields.add(x));
     }
 
     @Test
@@ -44,7 +42,7 @@ class BoardTest {
         );
     }
 
-    @ParameterizedTest(name = "Test for {1}")
+    @ParameterizedTest(name = "Test amount of {1} on board")
     @MethodSource("provideParams")
     void testAmountOfPieces(int amount, PieceType pieceType) {
         this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceType().equals(pieceType)).forEach(this.outputList::add);
@@ -67,13 +65,13 @@ class BoardTest {
 
     private static Stream<Arguments> neighbourHoodArguments() {
         return Stream.of(
-                Arguments.of(new Field(0, 0), 0),
-                Arguments.of(new Field(3, 0), 0),
-                Arguments.of(new Field(0, 1), 2),
-                Arguments.of(new Field(1, 1), 3),
-                Arguments.of(new Field(0, 7), 0),
-                Arguments.of(new Field(0, 6), 2),
-                Arguments.of(new Field(1, 6), 3)
+                Arguments.of(new Field(1, 1), 0),
+                Arguments.of(new Field(4, 1), 0),
+                Arguments.of(new Field(1, 2), 2),
+                Arguments.of(new Field(2, 2), 3),
+                Arguments.of(new Field(1, 8), 0),
+                Arguments.of(new Field(1, 7), 2),
+                Arguments.of(new Field(2, 7), 3)
         );
     }
 
