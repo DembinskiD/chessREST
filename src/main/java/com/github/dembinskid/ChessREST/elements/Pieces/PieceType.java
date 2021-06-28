@@ -79,9 +79,9 @@ public enum PieceType {
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
             Arrays.stream(new int[]{-1, 1}).forEach(x -> Arrays.stream(new int[]{-2, 2}).forEach(y -> {
-                if (!(field.getX() - x < 0 || field.getX() - x > 7 || field.getY() - y < 0 || field.getY() - y > 7))
+                if (!(field.getX() - x < 1 || field.getX() - x > 8 || field.getY() - y < 1 || field.getY() - y > 8))
                     outputList.add(new Field(field.getX() - x, field.getY() - y));
-                if (!(field.getX() - y < 0 || field.getX() - y > 7 || field.getY() - x < 0 || field.getY() - x > 7))
+                if (!(field.getX() - y < 1 || field.getX() - y > 8 || field.getY() - x < 1 || field.getY() - x > 8))
                     outputList.add(new Field(field.getX() - y, field.getY() - x));
             }));
             return outputList;
@@ -97,9 +97,9 @@ public enum PieceType {
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
             int posY = board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE) ? field.getY() + 1 : field.getY() - 1;
-            if (field.getY() == 1 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE)) {
+            if (field.getY() == 2 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE)) {
                 outputList.add(new Field(field.getX(), posY + 1));
-            } else if (field.getY() == 6 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.BLACK)) {
+            } else if (field.getY() == 7 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.BLACK)) {
                 outputList.add(new Field(field.getX(), posY - 1));
             }
             outputList.add(new Field(field.getX(), posY));
@@ -141,7 +141,7 @@ public enum PieceType {
 
     public ArrayList<Field> getInlineMoves(Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
-        ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> listY = new ArrayList<>(listX);
         listX.removeIf(p -> field.getX() == p);
         listY.removeIf(p -> field.getY() == p);
@@ -158,7 +158,7 @@ public enum PieceType {
 
     public ArrayList<Field> getDiagonalMoves(Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
-        ArrayList<Integer> listX = IntStream.rangeClosed(0, 7).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
         ArrayList<Integer> listY = new ArrayList<>(listX);
         listX.removeIf(p -> field.getX() == p);
         listY.removeIf(p -> field.getY() == p);
@@ -177,6 +177,6 @@ public enum PieceType {
     }
 
     private static boolean fieldInBorder(int coordinate) {
-        return coordinate >= 0 && coordinate <= 7;
+        return coordinate > 0 && coordinate <= 8;
     }
 }
