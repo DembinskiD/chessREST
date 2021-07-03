@@ -11,5 +11,4 @@ public class Piece {
     private int initialPosY;
     private PieceColor pieceColor;
 
-
 }
