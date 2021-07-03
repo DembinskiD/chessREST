@@ -25,11 +25,16 @@ public class Board {
     }
 
     public void printBoard() {
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                System.out.print(getFieldByCoordinates(y, 7 - x).toString() + " ");
+        for (int x = 1; x <= 8; x++) {
+            for (int y = 1; y <= 8; y++) {
+                if(y == 1) System.out.print(x + " ");
+                System.out.print(getFieldByCoordinates(y, x).toString());
             }
             System.out.println();
+        }
+        for (int i = 1; i <= 8; i++) {
+            if(i == 1) System.out.printf("    %s  ", Field.getLiteral(i));
+            else System.out.printf("  %s  ", Field.getLiteral(i));
         }
     }
 

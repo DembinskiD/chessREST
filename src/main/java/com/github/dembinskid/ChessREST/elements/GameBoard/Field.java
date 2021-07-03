@@ -20,32 +20,40 @@ public class Field implements Comparable<Field> {
     }
 
 
-
     @Override
     public String toString() {
-//        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : getLiteral(x) + y;
-//        return isTaken() ? piece.getPieceColor().getShortName() + piece.getPieceType().getShortName() : "[" + x + "," + y + "]";
-        return "[" + x + "," + y + "]";
+        String format = "[%s,%s]";
+        return isTaken() ?
+                String.format(format, piece.getPieceColor().getShortName(), piece.getPieceType().getShortName()) :
+                String.format(format, getLiteral(x), y);
     }
 
-    private String getLiteral(int x) {
+    public static String getLiteral(int x) {
         String literal = "?";
-        switch(x) {
-            case 0: literal = "A";
+        switch (x) {
+            case 1:
+                literal = "A";
                 break;
-            case 1: literal = "B";
+            case 2:
+                literal = "B";
                 break;
-            case 2: literal = "C";
+            case 3:
+                literal = "C";
                 break;
-            case 3: literal = "D";
+            case 4:
+                literal = "D";
                 break;
-            case 4: literal = "E";
+            case 5:
+                literal = "E";
                 break;
-            case 5: literal = "F";
+            case 6:
+                literal = "F";
                 break;
-            case 6: literal = "G";
+            case 7:
+                literal = "G";
                 break;
-            case 7: literal = "H";
+            case 8:
+                literal = "H";
                 break;
         }
         return literal;
@@ -53,9 +61,9 @@ public class Field implements Comparable<Field> {
 
     @Override
     public int compareTo(Field o) {
-        if(this.getX() > o.getX()) {
+        if (this.getX() > o.getX()) {
             return 1;
-        } else if(this.getX() < o.getX()) {
+        } else if (this.getX() < o.getX()) {
             return -1;
         } else return Integer.compare(this.getY(), o.getY());
     }
