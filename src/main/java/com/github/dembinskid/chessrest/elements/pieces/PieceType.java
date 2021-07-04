@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.pieces;
 
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.gameboard.Board;
 import com.github.dembinskid.chessrest.elements.gameboard.Field;
 
@@ -32,8 +33,8 @@ public enum PieceType {
             //remove taken fields but not ones with enemy on
 
             outputList.removeIf(fld -> board.getFieldByCoordinates(fld.getX(), fld.getY()).isTaken() &&
-                    board.getFieldByCoordinates(fld.getX(), fld.getY()).getPiece().getPieceColor().equals(
-                            board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor()
+                    board.getFieldByCoordinates(fld.getX(), fld.getY()).getPiece().getColor().equals(
+                            board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor()
                     ));
             return outputList;
         }
@@ -102,10 +103,10 @@ public enum PieceType {
         @Override
         public List<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
-            int posY = board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE) ? field.getY() + 1 : field.getY() - 1;
-            if (field.getY() == 2 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE)) {
+            int posY = board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor().equals(Color.WHITE) ? field.getY() + 1 : field.getY() - 1;
+            if (field.getY() == 2 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor().equals(Color.WHITE)) {
                 outputList.add(new Field(field.getX(), posY + 1));
-            } else if (field.getY() == 7 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.BLACK)) {
+            } else if (field.getY() == 7 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor().equals(Color.BLACK)) {
                 outputList.add(new Field(field.getX(), posY - 1));
             }
             outputList.add(new Field(field.getX(), posY));
@@ -197,8 +198,8 @@ public enum PieceType {
 
 
     private boolean arePiecesSameColorWithPos(Board board, int x1, int y1, int x2, int y2) {
-        return board.getFieldByCoordinates(x1, y1).getPiece().getPieceColor().equals(
-                board.getFieldByCoordinates(x2, y2).getPiece().getPieceColor()
+        return board.getFieldByCoordinates(x1, y1).getPiece().getColor().equals(
+                board.getFieldByCoordinates(x2, y2).getPiece().getColor()
         );
     }
 
@@ -207,8 +208,8 @@ public enum PieceType {
         if(isFieldInBorder(field.getX() + posX) && isFieldInBorder(field.getY() + posY) && !flag) { //todo can it be changed into a stream?
                 if(!board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).isTaken() || //free
                         (board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).isTaken() &&
-                                !board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).getPiece().getPieceColor().equals(
-                                        board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor()
+                                !board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).getPiece().getColor().equals(
+                                        board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor()
                                 ))) { //enemy
                     outputList.add(board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY));
                 }
@@ -244,7 +245,7 @@ public enum PieceType {
                 isFieldInBorder(field.getY() - y)) {
             if(!board.getFieldByCoordinates(field.getX() - x, field.getY() - y).isTaken()) outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
             else {
-                if(!board.getFieldByCoordinates(field.getX() - x, field.getY() - y).getPiece().getPieceColor().equals(board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor())) outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
+                if(!board.getFieldByCoordinates(field.getX() - x, field.getY() - y).getPiece().getColor().equals(board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getColor())) outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.gameboard;
 
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.pieces.Piece;
 import lombok.Data;
 
@@ -7,13 +8,13 @@ import lombok.Data;
 public class Field implements Comparable<Field> {
     private int x;
     private int y;
-    private FieldColor fieldColor;
+    private Color fieldColor;
     private boolean isTaken;
     private Piece piece;
 
     public Field() {
         this.fieldColor = x + y % 2 == 0
-                ? FieldColor.BLACK : FieldColor.WHITE;
+                ? Color.BLACK : Color.WHITE;
         this.isTaken = false;
     }
 
@@ -38,7 +39,7 @@ public class Field implements Comparable<Field> {
         var formatFree = "[%s,%s]";
         var formatTaken = "[%s_%s]";
         return isTaken() ?
-                String.format(formatTaken, piece.getPieceColor().getShortName(), piece.getPieceType().getShortName()) :
+                String.format(formatTaken, piece.getColor().getShortName(), piece.getPieceType().getShortName()) :
                 String.format(formatFree, getLiteral(x), y);
     }
 

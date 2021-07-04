@@ -1,11 +1,11 @@
-package com.github.dembinskid.chessrest.elements.pieces;
+package com.github.dembinskid.chessrest.elements;
 
-public enum PieceColor {
+public enum Color {
     WHITE("W"), BLACK("B");
 
     private final String shortName;
 
-    PieceColor(String shortName) {
+    Color(String shortName) {
         this.shortName = shortName;
     }
 
