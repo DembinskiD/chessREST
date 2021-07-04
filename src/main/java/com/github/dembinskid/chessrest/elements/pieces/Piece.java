@@ -1,4 +1,4 @@
-package com.github.dembinskid.ChessREST.elements.Pieces;
+package com.github.dembinskid.chessrest.elements.pieces;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

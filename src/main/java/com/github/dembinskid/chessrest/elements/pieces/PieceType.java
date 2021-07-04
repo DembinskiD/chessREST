@@ -1,7 +1,7 @@
-package com.github.dembinskid.ChessREST.elements.Pieces;
+package com.github.dembinskid.chessrest.elements.pieces;
 
-import com.github.dembinskid.ChessREST.elements.GameBoard.Board;
-import com.github.dembinskid.ChessREST.elements.GameBoard.Field;
+import com.github.dembinskid.chessrest.elements.gameboard.Board;
+import com.github.dembinskid.chessrest.elements.gameboard.Field;
 
 import java.util.ArrayList;
 import java.util.Arrays;

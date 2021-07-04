@@ -1,23 +1,19 @@
-package com.github.dembinskid.ChessREST.elements.Pieces;
+package com.github.dembinskid.chessrest.elements.pieces;
 
-import com.github.dembinskid.ChessREST.elements.GameBoard.Board;
-import com.github.dembinskid.ChessREST.elements.GameBoard.Field;
+import com.github.dembinskid.chessrest.elements.gameboard.Board;
+import com.github.dembinskid.chessrest.elements.gameboard.Field;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.github.dembinskid.ChessREST.elements.Pieces.PieceColor.BLACK;
-import static com.github.dembinskid.ChessREST.elements.Pieces.PieceColor.WHITE;
+import static com.github.dembinskid.chessrest.elements.pieces.PieceColor.BLACK;
+import static com.github.dembinskid.chessrest.elements.pieces.PieceColor.WHITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PieceTypeTest {
@@ -29,10 +25,10 @@ class PieceTypeTest {
                 Arguments.of(PieceType.KNIGHT, BLACK, board.getFieldByCoordinates(7, 1), List.of(board.getFieldByCoordinates(8, 3), board.getFieldByCoordinates(6, 3), board.getFieldByCoordinates(5, 2))),
                 Arguments.of(PieceType.KNIGHT, BLACK, board.getFieldByCoordinates(4, 7),
                         List.of(
-                        board.getFieldByCoordinates(2, 6),
-                        board.getFieldByCoordinates(3, 5),
-                        board.getFieldByCoordinates(5, 5),
-                        board.getFieldByCoordinates(6, 6))),
+                                board.getFieldByCoordinates(2, 6),
+                                board.getFieldByCoordinates(3, 5),
+                                board.getFieldByCoordinates(5, 5),
+                                board.getFieldByCoordinates(6, 6))),
                 Arguments.of(PieceType.PAWN, WHITE, board.getFieldByCoordinates(1, 2), List.of(
                         board.getFieldByCoordinates(1, 3),
                         board.getFieldByCoordinates(1, 4)
@@ -71,7 +67,7 @@ class PieceTypeTest {
                 Arguments.of(PieceType.KING, BLACK, board.getFieldByCoordinates(5, 8), Lists.emptyList())
         );
     }
-    
+
     static Board board = new Board();
 
     @ParameterizedTest(name = "{0} on field {2} ")
@@ -89,10 +85,5 @@ class PieceTypeTest {
         Collections.sort(outList);
         Collections.sort(checkList);
         assertEquals(checkList, outList);
-    }
-
-    @Test
-    void myPurposes() {
-        IntStream.range(8, 8).forEach(System.out::println);
     }
 }

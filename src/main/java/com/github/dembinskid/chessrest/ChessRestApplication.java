@@ -1,6 +1,6 @@
-package com.github.dembinskid.ChessREST;
+package com.github.dembinskid.chessrest;
 
-import com.github.dembinskid.ChessREST.elements.GameBoard.Board;
+import com.github.dembinskid.chessrest.elements.gameboard.Board;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

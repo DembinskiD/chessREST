@@ -1,7 +1,7 @@
-package com.github.dembinskid.ChessREST.elements.GameBoard;
+package com.github.dembinskid.chessrest.elements.gameboard;
 
-import com.github.dembinskid.ChessREST.elements.Pieces.PieceColor;
-import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
+import com.github.dembinskid.chessrest.elements.pieces.PieceColor;
+import com.github.dembinskid.chessrest.elements.pieces.PieceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,7 @@ class BoardTest {
     @BeforeEach
     void init() {
         this.board = new Board();
-        this.fields = new ArrayList<>(this.board.getBoard());
+        this.fields = new ArrayList<>(this.board.getGameBoard());
         this.outputList = new ArrayList<>();
         board.printBoard();
     }
