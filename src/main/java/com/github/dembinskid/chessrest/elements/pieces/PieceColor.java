@@ -1,4 +1,4 @@
-package com.github.dembinskid.ChessREST.elements.Pieces;
+package com.github.dembinskid.chessrest.elements.pieces;
 
 public enum PieceColor {
     WHITE("W"), BLACK("B");

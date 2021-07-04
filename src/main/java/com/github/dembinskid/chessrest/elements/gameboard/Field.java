@@ -1,9 +1,7 @@
-package com.github.dembinskid.ChessREST.elements.GameBoard;
+package com.github.dembinskid.chessrest.elements.gameboard;
 
-import com.github.dembinskid.ChessREST.elements.Pieces.Piece;
+import com.github.dembinskid.chessrest.elements.pieces.Piece;
 import lombok.Data;
-
-import java.util.Objects;
 
 @Data
 public class Field implements Comparable<Field> {
@@ -27,15 +25,15 @@ public class Field implements Comparable<Field> {
 
     @Override
     public String toString() {
-        String format = "[%s%s%s]";
-        return String.format(format, x, y, taken());
-        /*return isTaken() ?
-                String.format(format, piece.getPieceColor().getShortName(), piece.getPieceType().getShortName()) :
-                String.format(format, getLiteral(x), y);*/
+        var formatFree = "[%s,%s]";
+        var formatTaken = "[%s_%s]";
+        return isTaken() ?
+                String.format(formatTaken, piece.getPieceColor().getShortName(), piece.getPieceType().getShortName()) :
+                String.format(formatFree, getLiteral(x), y);
     }
 
     public static String getLiteral(int x) {
-        String literal = "?";
+        String literal;
         switch (x) {
             case 1:
                 literal = "A";
@@ -60,6 +58,9 @@ public class Field implements Comparable<Field> {
                 break;
             case 8:
                 literal = "H";
+                break;
+            default:
+                literal = "?";
                 break;
         }
         return literal;

@@ -1,4 +1,4 @@
-package com.github.dembinskid.ChessREST;
+package com.github.dembinskid.chessrest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
