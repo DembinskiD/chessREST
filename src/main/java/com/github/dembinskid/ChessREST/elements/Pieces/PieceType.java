@@ -6,6 +6,7 @@ import com.github.dembinskid.ChessREST.elements.GameBoard.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,13 +21,20 @@ public enum PieceType {
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
+            //generate list of moves
             for (int x = field.getX() - 1; x <= field.getX() + 1; x++) {
                 for (int y = field.getY() - 1; y <= field.getY() + 1; y++) {
-                        outputList.add(new Field(x, y));
+                        if(isFieldInBorder(x) && isFieldInBorder(y)) outputList.add(board.getFieldByCoordinates(x, y));
                 }
             }
-            outputList.removeIf(x -> (x.getX() == field.getX() && x.getY() == field.getY())
-                    || (!fieldInBorder(x.getX()) || !fieldInBorder(x.getY())));
+            //remove checked field position
+            outputList.removeIf(x -> (x.getX() == field.getX() && x.getY() == field.getY()));
+            //remove taken fields but not ones with enemy on
+
+            outputList.removeIf(fld -> board.getFieldByCoordinates(fld.getX(), fld.getY()).isTaken() &&
+                    board.getFieldByCoordinates(fld.getX(), fld.getY()).getPiece().getPieceColor().equals(
+                            board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor()
+                    ));
             return outputList;
         }
     },
@@ -38,8 +46,8 @@ public enum PieceType {
 
         @Override
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            ArrayList<Field> outputList = new ArrayList<>(getInlineMoves(field));
-            outputList.addAll(getDiagonalMoves(field));
+            ArrayList<Field> outputList = new ArrayList<>(getInlineMoves(board, field));
+            outputList.addAll(getDiagonalMoves(board, field));
             Collections.sort(outputList);
             return outputList;
         }
@@ -52,8 +60,8 @@ public enum PieceType {
         }
 
         @Override
-        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            return getInlineMoves(field);
+        public List<Field> getPossibleMoves(Board board, Field field) {
+            return getInlineMoves(board, field);
         }
     },
     BISHOP(new Field(3, 1), new Field(6, 1),
@@ -64,8 +72,8 @@ public enum PieceType {
         }
 
         @Override
-        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
-            return getDiagonalMoves(field);
+        public List<Field> getPossibleMoves(Board board, Field field) {
+            return getDiagonalMoves(board, field);
         }
     },
     KNIGHT(new Field(2, 1), new Field(7, 1),
@@ -79,10 +87,12 @@ public enum PieceType {
         public ArrayList<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
             Arrays.stream(new int[]{-1, 1}).forEach(x -> Arrays.stream(new int[]{-2, 2}).forEach(y -> {
-                if (!(field.getX() - x < 1 || field.getX() - x > 8 || field.getY() - y < 1 || field.getY() - y > 8))
-                    outputList.add(new Field(field.getX() - x, field.getY() - y));
-                if (!(field.getX() - y < 1 || field.getX() - y > 8 || field.getY() - x < 1 || field.getY() - x > 8))
-                    outputList.add(new Field(field.getX() - y, field.getY() - x));
+                checkForUnitCollisionInKnightMovementAndAddToList(board, field, x, y, outputList);
+                checkForUnitCollisionInKnightMovementAndAddToList(board, field, y, x, outputList);
+//                if (!(field.getX() - x < 1 || field.getX() - x > 8 || field.getY() - y < 1 || field.getY() - y > 8))
+//                    outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
+//                if (!(field.getX() - y < 1 || field.getX() - y > 8 || field.getY() - x < 1 || field.getY() - x > 8))
+//                    outputList.add(board.getFieldByCoordinates(field.getX() - y, field.getY() - x));
             }));
             return outputList;
         }
@@ -94,7 +104,7 @@ public enum PieceType {
         }
 
         @Override
-        public ArrayList<Field> getPossibleMoves(Board board, Field field) {
+        public List<Field> getPossibleMoves(Board board, Field field) {
             ArrayList<Field> outputList = new ArrayList<>();
             int posY = board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE) ? field.getY() + 1 : field.getY() - 1;
             if (field.getY() == 2 && board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor().equals(PieceColor.WHITE)) {
@@ -107,15 +117,15 @@ public enum PieceType {
         }
     };
 
-    private ArrayList<Field> fields = new ArrayList<>();
+    private final List<Field> fields = new ArrayList<>();
 
     abstract public String getShortName();
 
-    abstract public ArrayList<Field> getPossibleMoves(Board board, Field field);
+    abstract public List<Field> getPossibleMoves(Board board, Field field);
 
     PieceType(Field... fields) {
         if (fields.length == 0) {
-            ArrayList<Integer> xPos = new ArrayList<>();
+            List<Integer> xPos = new ArrayList<>();
             xPos.add(2);
             xPos.add(7);
             xPos.forEach(x -> fillPawns(x, this.fields));
@@ -125,58 +135,125 @@ public enum PieceType {
         }
     }
 
-    private void fillPawns(int x, ArrayList<Field> pos) {
+    private void fillPawns(int x, List<Field> pos) {
         for (int i = 1; i <= 8; i++) {
+            //noinspection SuspiciousNameCombination
             pos.add(new Field(i, x));
         }
     }
 
-    public void listPositions() {
-        this.fields.forEach(System.out::println);
-    }
-
-    public ArrayList<Field> getFields() {
+    public List<Field> getFields() {
         return this.fields;
     }
 
-    public ArrayList<Field> getInlineMoves(Field field) {
+    public List<Field> getInlineMoves(Board board, Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
-        ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Integer> listY = new ArrayList<>(listX);
-        listX.removeIf(p -> field.getX() == p);
-        listY.removeIf(p -> field.getY() == p);
 
-        for (int i = 0; i < listX.size(); i++) {
-            outputList.add(new Field(listX.get(i), field.getY()));
+        ArrayList<Integer> listXAfter = IntStream.rangeClosed(field.getX(), 8).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listXBefore = IntStream.rangeClosed(1, field.getX()).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listYAfter = IntStream.rangeClosed(field.getY(), 8).boxed().collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Integer> listYBefore = IntStream.rangeClosed(1, field.getY()).boxed().collect(Collectors.toCollection(ArrayList::new));
+
+        listXAfter.removeIf(p -> field.getX() == p);
+        listXBefore.removeIf(p -> field.getX() == p);
+        listYAfter.removeIf(p -> field.getY() == p);
+        listYBefore.removeIf(p -> field.getY() == p);
+
+        listXBefore.sort((a, b) -> a < b ? 1 : -1);
+        listYBefore.sort((a, b) -> a < b ? 1 : -1);
+
+        System.out.println(listXBefore + " " + listXAfter);
+        System.out.println(listYBefore + " " + listYAfter);
+
+        var isXAfterTaken = false;
+        var isXBeforeTaken = false;
+        var isYAfterTaken = false;
+        var isYBeforeTaken = false;
+
+        for (Integer x : listXBefore) {
+                isXBeforeTaken = checkForUnitCollisionAndAddInLinearMovement(board, isXBeforeTaken, board.getFieldByCoordinates(field.getX(), field.getY()), x, field.getY(), outputList);
         }
 
-        for (int i = 0; i < listY.size(); i++) {
-            outputList.add(new Field(field.getX(), listY.get(i)));
+        for (Integer x : listXAfter) {
+                isXAfterTaken = checkForUnitCollisionAndAddInLinearMovement(board, isXAfterTaken, board.getFieldByCoordinates(field.getX(), field.getY()), x, field.getY(), outputList);
+        }
+
+        for (Integer y : listYBefore) {
+                isYBeforeTaken = checkForUnitCollisionAndAddInLinearMovement(board, isYBeforeTaken, board.getFieldByCoordinates(field.getX(), field.getY()), field.getX(), y, outputList);
+        }
+
+        for (Integer y : listYAfter) {
+                isYAfterTaken = checkForUnitCollisionAndAddInLinearMovement(board, isYAfterTaken, board.getFieldByCoordinates(field.getX(), field.getY()), field.getX(), y, outputList);
         }
         return outputList;
     }
 
-    public ArrayList<Field> getDiagonalMoves(Field field) {
+    private boolean checkForUnitCollisionAndAddInLinearMovement(Board board, boolean flag, Field field, int posX, int posY, List<Field> outputList) {
+        System.out.printf("%s %s %s %s\n", board.getFieldByCoordinates(field.getX(), field.getY()).getPiece(), posX, posY, board.getFieldByCoordinates(posX, posY).getPiece());
+        if(!flag) {
+            if(!board.getFieldByCoordinates(posX, posY).isTaken()) {
+                outputList.add(board.getFieldByCoordinates(posX, posY));
+            } else {
+                if(!arePiecesSameColorWithPos(board, field.getX(), posY, field.getX(), field.getY())) {
+                    outputList.add(board.getFieldByCoordinates(posX, posY));
+                }
+            }
+            flag = board.getFieldByCoordinates(posX, posY).isTaken();
+        }
+        return flag;
+    }
+
+
+    private boolean arePiecesSameColorWithPos(Board board, int x1, int y1, int x2, int y2) {
+        return board.getFieldByCoordinates(x1, y1).getPiece().getPieceColor().equals(
+                board.getFieldByCoordinates(x2, y2).getPiece().getPieceColor()
+        );
+    }
+
+    private boolean checkForUnitCollisionAndAddInDiagonalMovement(Board board, boolean flag, Field field, int posX, int posY, ArrayList<Field> outputList) {
+
+        if(isFieldInBorder(field.getX() + posX) && isFieldInBorder(field.getY() + posY) && !flag) { //todo can it be changed into a stream?
+                if(!board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).isTaken() || //free
+                        (board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).isTaken() &&
+                                !board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).getPiece().getPieceColor().equals(
+                                        board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor()
+                                ))) { //enemy
+                    outputList.add(board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY));
+                }
+                flag = board.getFieldByCoordinates(field.getX() + posX, field.getY() + posY).isTaken();
+        }
+        return flag;
+    }
+
+    public List<Field> getDiagonalMoves(Board board, Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Integer> listY = new ArrayList<>(listX);
         listX.removeIf(p -> field.getX() == p);
-        listY.removeIf(p -> field.getY() == p);
+        boolean takenNE = false;
+        boolean takenNW = false;
+        boolean takenSE = false;
+        boolean takenSW = false;
 
         for (int i = 1; i < listX.size(); i++) {
-            if (fieldInBorder(field.getX() + i) && fieldInBorder(field.getY() + i))
-                outputList.add(new Field(field.getX() + i, field.getY() + i));
-            if (fieldInBorder(field.getX() + i) && fieldInBorder(field.getY() - i))
-                outputList.add(new Field(field.getX() + i, field.getY() - i));
-            if (fieldInBorder(field.getX() - i) && fieldInBorder(field.getY() + i))
-                outputList.add(new Field(field.getX() - i, field.getY() + i));
-            if (fieldInBorder(field.getX() - i) && fieldInBorder(field.getY() - i))
-                outputList.add(new Field(field.getX() - i, field.getY() - i));
+                    takenNE = checkForUnitCollisionAndAddInDiagonalMovement(board, takenNE, field, i, i, outputList);
+                    takenNW = checkForUnitCollisionAndAddInDiagonalMovement(board, takenNW, field, -1*i, i, outputList);
+                    takenSE = checkForUnitCollisionAndAddInDiagonalMovement(board, takenSE, field, i, -1*i, outputList);
+                    takenSW = checkForUnitCollisionAndAddInDiagonalMovement(board, takenSW, field,-1*i, -1*i, outputList);
         }
         return outputList;
     }
 
-    private static boolean fieldInBorder(int coordinate) {
+    private static boolean isFieldInBorder(int coordinate) {
         return coordinate > 0 && coordinate <= 8;
+    }
+
+    private static void checkForUnitCollisionInKnightMovementAndAddToList(Board board, Field field, int x, int y, List<Field> outputList) {
+        if(isFieldInBorder(field.getX() - x) &&
+                isFieldInBorder(field.getY() - y)) {
+            if(!board.getFieldByCoordinates(field.getX() - x, field.getY() - y).isTaken()) outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
+            else {
+                if(!board.getFieldByCoordinates(field.getX() - x, field.getY() - y).getPiece().getPieceColor().equals(board.getFieldByCoordinates(field.getX(), field.getY()).getPiece().getPieceColor())) outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
+            }
+        }
     }
 }

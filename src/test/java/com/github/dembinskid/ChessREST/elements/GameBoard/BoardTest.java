@@ -23,7 +23,26 @@ class BoardTest {
         this.board = new Board();
         this.fields = new ArrayList<>(this.board.getBoard());
         this.outputList = new ArrayList<>();
-        board.initializeBoard();
+        board.printBoard();
+    }
+
+    @ParameterizedTest(name = "Testing getFieldByCoordinate wit {0} {1}")
+    @MethodSource("provideCoordinates")
+    void testGetFieldsByCoordinates(int coordX, int coordY) {
+        System.out.println(this.board.getFieldByCoordinates(coordX, coordY));
+        assertEquals(coordX, this.board.getFieldByCoordinates(coordX, coordY).getX());
+        assertEquals(coordY, this.board.getFieldByCoordinates(coordX, coordY).getY());
+    }
+
+    private static Stream<Arguments> provideCoordinates() {
+        return Stream.of(
+                Arguments.of(4, 4),
+                Arguments.of(5, 8),
+                Arguments.of(8, 8),
+                Arguments.of(1, 1),
+                Arguments.of(3, 6),
+                Arguments.of(2, 2)
+        );
     }
 
     @Test
