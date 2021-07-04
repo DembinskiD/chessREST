@@ -11,4 +11,8 @@ public class Piece {
     private int initialPosY;
     private PieceColor pieceColor;
 
+    public Piece(PieceType pieceType, PieceColor pieceColor) {
+        this.pieceType = pieceType;
+        this.pieceColor = pieceColor;
+    }
 }

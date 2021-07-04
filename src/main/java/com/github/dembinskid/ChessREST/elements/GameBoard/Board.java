@@ -6,10 +6,11 @@ import com.github.dembinskid.ChessREST.elements.Pieces.PieceType;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Board {
-    private ArrayList<Field> board = new ArrayList<>(); //todo przemyśleć rozwiązanie dla Field[](1 dimension)
+    private List<Field> board = new ArrayList<>();
 
     public Board() {
         for (int x = 1; x <= 8; x++) {
@@ -18,6 +19,15 @@ public class Board {
             }
         }
         initializeBoard();
+    }
+
+    //this method should be used when moving might be in place
+    public Field updateField(int x, int y, Field field) {
+        return board.set(((8*(x-1) + y) - 1), field);
+    }
+    //this method should be used to update field in place, without moving
+    public Field updateField(Field field) {
+        return board.set(((8*(field.getX()-1) + field.getY()) - 1), field);
     }
 
     public Field getFieldByCoordinates(int x, int y) {
@@ -36,9 +46,10 @@ public class Board {
             if(i == 1) System.out.printf("    %s  ", Field.getLiteral(i));
             else System.out.printf("  %s  ", Field.getLiteral(i));
         }
+        System.out.println();
     }
 
-    public ArrayList<Field> getNeighbours(Field field) {
+    public List<Field> getNeighbours(Field field) {
         int minX = field.getX() == 1 ? field.getX() : field.getX()-1;
         int maxX = field.getX() == 8 ? field.getX() : field.getX()+1;
         int minY = field.getY() == 1 ? field.getY() : field.getY()-1;
@@ -61,8 +72,9 @@ public class Board {
         }
     }
 
-    public void addPieceToBoard(Piece piece) {
+    public Field addPieceToBoard(Piece piece) {
         getFieldByCoordinates(piece.getInitialPosX(), piece.getInitialPosY()).setTaken(true);
         getFieldByCoordinates(piece.getInitialPosX(), piece.getInitialPosY()).setPiece(piece);
+        return getFieldByCoordinates(piece.getInitialPosX(), piece.getInitialPosY());
     }
 }

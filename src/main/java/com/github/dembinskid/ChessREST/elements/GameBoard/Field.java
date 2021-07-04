@@ -3,6 +3,8 @@ package com.github.dembinskid.ChessREST.elements.GameBoard;
 import com.github.dembinskid.ChessREST.elements.Pieces.Piece;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class Field implements Comparable<Field> {
     private int x;
@@ -19,13 +21,17 @@ public class Field implements Comparable<Field> {
         this.isTaken = false;
     }
 
+    public String taken() {
+        return isTaken ? "T" : "F";
+    }
 
     @Override
     public String toString() {
-        String format = "[%s,%s]";
-        return isTaken() ?
+        String format = "[%s%s%s]";
+        return String.format(format, x, y, taken());
+        /*return isTaken() ?
                 String.format(format, piece.getPieceColor().getShortName(), piece.getPieceType().getShortName()) :
-                String.format(format, getLiteral(x), y);
+                String.format(format, getLiteral(x), y);*/
     }
 
     public static String getLiteral(int x) {
@@ -67,4 +73,6 @@ public class Field implements Comparable<Field> {
             return -1;
         } else return Integer.compare(this.getY(), o.getY());
     }
+
+
 }
