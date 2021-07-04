@@ -9,7 +9,7 @@ public class Game {
     String gameDescription;
     Player firstPlayer;
     Player secondPlayer;
-    List<Turn> turnList;
+    List<Turn> turnList; //player, list of possible moves, move taken,
     List<Movement> movementList; //list of moves done already
     List<Movement> possibleMoves; //list of possible moves in currentTurn
     Turn currentTurn;
