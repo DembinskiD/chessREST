@@ -89,10 +89,6 @@ public enum PieceType {
             Arrays.stream(new int[]{-1, 1}).forEach(x -> Arrays.stream(new int[]{-2, 2}).forEach(y -> {
                 checkForUnitCollisionInKnightMovementAndAddToList(board, field, x, y, outputList);
                 checkForUnitCollisionInKnightMovementAndAddToList(board, field, y, x, outputList);
-//                if (!(field.getX() - x < 1 || field.getX() - x > 8 || field.getY() - y < 1 || field.getY() - y > 8))
-//                    outputList.add(board.getFieldByCoordinates(field.getX() - x, field.getY() - y));
-//                if (!(field.getX() - y < 1 || field.getX() - y > 8 || field.getY() - x < 1 || field.getY() - x > 8))
-//                    outputList.add(board.getFieldByCoordinates(field.getX() - y, field.getY() - x));
             }));
             return outputList;
         }
@@ -119,9 +115,9 @@ public enum PieceType {
 
     private final List<Field> fields = new ArrayList<>();
 
-    abstract public String getShortName();
+    public abstract String getShortName();
 
-    abstract public List<Field> getPossibleMoves(Board board, Field field);
+    public abstract List<Field> getPossibleMoves(Board board, Field field);
 
     PieceType(Field... fields) {
         if (fields.length == 0) {
@@ -136,7 +132,7 @@ public enum PieceType {
     }
 
     private void fillPawns(int x, List<Field> pos) {
-        for (int i = 1; i <= 8; i++) {
+        for (var i = 1; i <= 8; i++) {
             //noinspection SuspiciousNameCombination
             pos.add(new Field(i, x));
         }
@@ -162,9 +158,6 @@ public enum PieceType {
         listXBefore.sort((a, b) -> a < b ? 1 : -1);
         listYBefore.sort((a, b) -> a < b ? 1 : -1);
 
-        System.out.println(listXBefore + " " + listXAfter);
-        System.out.println(listYBefore + " " + listYAfter);
-
         var isXAfterTaken = false;
         var isXBeforeTaken = false;
         var isYAfterTaken = false;
@@ -189,7 +182,6 @@ public enum PieceType {
     }
 
     private boolean checkForUnitCollisionAndAddInLinearMovement(Board board, boolean flag, Field field, int posX, int posY, List<Field> outputList) {
-        System.out.printf("%s %s %s %s\n", board.getFieldByCoordinates(field.getX(), field.getY()).getPiece(), posX, posY, board.getFieldByCoordinates(posX, posY).getPiece());
         if(!flag) {
             if(!board.getFieldByCoordinates(posX, posY).isTaken()) {
                 outputList.add(board.getFieldByCoordinates(posX, posY));
@@ -229,12 +221,12 @@ public enum PieceType {
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
         listX.removeIf(p -> field.getX() == p);
-        boolean takenNE = false;
-        boolean takenNW = false;
-        boolean takenSE = false;
-        boolean takenSW = false;
+        var takenNE = false;
+        var takenNW = false;
+        var takenSE = false;
+        var takenSW = false;
 
-        for (int i = 1; i < listX.size(); i++) {
+        for (var i = 1; i < listX.size(); i++) {
                     takenNE = checkForUnitCollisionAndAddInDiagonalMovement(board, takenNE, field, i, i, outputList);
                     takenNW = checkForUnitCollisionAndAddInDiagonalMovement(board, takenNW, field, -1*i, i, outputList);
                     takenSE = checkForUnitCollisionAndAddInDiagonalMovement(board, takenSE, field, i, -1*i, outputList);

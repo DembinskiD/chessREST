@@ -9,8 +9,7 @@ public class ChessRestApplication {
 
     public static void main(String[] args) {
 		SpringApplication.run(ChessRestApplication.class, args);
-        Board board = new Board();
+        var board = new Board();
         board.printBoard();
     }
-
 }
