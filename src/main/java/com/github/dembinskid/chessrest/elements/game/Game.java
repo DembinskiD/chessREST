@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.game;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,15 @@ public class Game {
     List<Movement> possibleMoves; //list of possible moves in currentTurn
     Turn currentTurn;
     Date startTime;
+
+    public Game(Player firstPlayer, Player secondPlayer) {
+        this.id = UUID.randomUUID();
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
+        this.turnList = new ArrayList<>();
+
+
+    }
 
 
 }
