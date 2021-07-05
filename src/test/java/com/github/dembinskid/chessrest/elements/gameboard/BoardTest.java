@@ -1,6 +1,6 @@
 package com.github.dembinskid.chessrest.elements.gameboard;
 
-import com.github.dembinskid.chessrest.elements.pieces.PieceColor;
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.pieces.PieceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,15 +70,15 @@ class BoardTest {
 
     private static Stream<Arguments> provideColorParams() {
         return Stream.of(
-                Arguments.of(PieceColor.WHITE),
-                Arguments.of(PieceColor.BLACK)
+                Arguments.of(Color.WHITE),
+                Arguments.of(Color.BLACK)
         );
     }
 
     @ParameterizedTest(name = "Test for {0}")
     @MethodSource("provideColorParams")
-    void testAmountOfWhitePieces(PieceColor pieceColor) {
-        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getPieceColor().equals(pieceColor)).forEach(outputList::add);
+    void testAmountOfWhitePieces(Color color) {
+        this.fields.stream().filter(Field::isTaken).filter(x -> x.getPiece().getColor().equals(color)).forEach(outputList::add);
         assertEquals(16, this.outputList.size());
     }
 

@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.pieces;
 
+import com.github.dembinskid.chessrest.elements.Color;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,10 +10,10 @@ public class Piece {
     private PieceType pieceType;
     private int initialPosX;
     private int initialPosY;
-    private PieceColor pieceColor;
+    private Color color;
 
-    public Piece(PieceType pieceType, PieceColor pieceColor) {
+    public Piece(PieceType pieceType, Color color) {
         this.pieceType = pieceType;
-        this.pieceColor = pieceColor;
+        this.color = color;
     }
 }

@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.pieces;
 
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.gameboard.Board;
 import com.github.dembinskid.chessrest.elements.gameboard.Field;
 import org.assertj.core.util.Lists;
@@ -12,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.github.dembinskid.chessrest.elements.pieces.PieceColor.BLACK;
-import static com.github.dembinskid.chessrest.elements.pieces.PieceColor.WHITE;
+import static com.github.dembinskid.chessrest.elements.Color.BLACK;
+import static com.github.dembinskid.chessrest.elements.Color.WHITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PieceTypeTest {
@@ -72,9 +73,9 @@ class PieceTypeTest {
 
     @ParameterizedTest(name = "{0} on field {2} ")
     @MethodSource("attributeProvider")
-    void getPossibleMoves(PieceType pieceType, PieceColor pieceColor, Field field, List<Field> list) {
+    void getPossibleMoves(PieceType pieceType, Color color, Field field, List<Field> list) {
         board = new Board();
-        Piece piece = new Piece(pieceType, pieceColor);
+        Piece piece = new Piece(pieceType, color);
         field.setPiece(piece);
         field.setTaken(true);
         List<Field> outList = pieceType.getPossibleMoves(board, board.updateField(field.getX(), field.getY(), field));

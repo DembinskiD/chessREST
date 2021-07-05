@@ -1,7 +1,7 @@
 package com.github.dembinskid.chessrest.elements.gameboard;
 
 import com.github.dembinskid.chessrest.elements.pieces.Piece;
-import com.github.dembinskid.chessrest.elements.pieces.PieceColor;
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.pieces.PieceType;
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -71,7 +71,7 @@ public class Board {
     public void initializeBoard() {
         for (PieceType type : PieceType.values()) {
             for (Field field : type.getFields()) {
-                PieceColor color = field.getY() == 2 || field.getY() == 1 ? PieceColor.WHITE : PieceColor.BLACK;
+                Color color = field.getY() == 2 || field.getY() == 1 ? Color.WHITE : Color.BLACK;
                 addPieceToBoard(new Piece(type, field.getX(), field.getY(), color));
             }
         }
