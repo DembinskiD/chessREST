@@ -143,7 +143,7 @@ public enum PieceType {
         return this.fields;
     }
 
-    public List<Field> getInlineMoves(Board board, Field field) {
+    List<Field> getInlineMoves(Board board, Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
 
         ArrayList<Integer> listXAfter = IntStream.rangeClosed(field.getX(), 8).boxed().collect(Collectors.toCollection(ArrayList::new));
@@ -218,7 +218,7 @@ public enum PieceType {
         return flag;
     }
 
-    public List<Field> getDiagonalMoves(Board board, Field field) {
+    List<Field> getDiagonalMoves(Board board, Field field) {
         ArrayList<Field> outputList = new ArrayList<>();
         ArrayList<Integer> listX = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toCollection(ArrayList::new));
         listX.removeIf(p -> field.getX() == p);

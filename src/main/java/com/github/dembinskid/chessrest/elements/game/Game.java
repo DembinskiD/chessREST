@@ -1,26 +1,33 @@
 package com.github.dembinskid.chessrest.elements.game;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import com.github.dembinskid.chessrest.elements.Color;
+import com.github.dembinskid.chessrest.elements.gameboard.Board;
+
+import java.util.*;
 
 public class Game {
     UUID id;
     String gameDescription;
-    Player firstPlayer;
-    Player secondPlayer;
+    PlayerInGame firstPlayer;
+    PlayerInGame secondPlayer;
+    Board board;
     List<Turn> turnList; //player, list of possible moves, move taken,
     Turn currentTurn;
     Date startTime;
     Date endTime;
 
-    public Game(Player firstPlayer, Player secondPlayer) {
+    public Game(PlayerInGame firstPlayer, PlayerInGame secondPlayer) {
         this.id = UUID.randomUUID();
+        this.startTime = Calendar.getInstance().getTime();
         this.firstPlayer = firstPlayer;
+        this.firstPlayer.setColor(Color.WHITE);
+        this.firstPlayer.setGameId(this.id);
         this.secondPlayer = secondPlayer;
+        this.secondPlayer.setColor(Color.BLACK);
+        this.secondPlayer.setGameId(this.id);
+        this.board = new Board();
         this.turnList = new ArrayList<>();
-        this.currentTurn = new Turn(firstPlayer, this.id, getPossibleMoves());
+        this.currentTurn = new Turn(firstPlayer, this.id, this.board);
 
 
     }

@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.game;
 
+import com.github.dembinskid.chessrest.elements.Color;
 import com.github.dembinskid.chessrest.elements.pieces.Piece;
 import lombok.Data;
 
@@ -22,4 +23,6 @@ public class Player {
         this.playerCreated = Calendar.getInstance().getTime();
         this.listOfPiecesPerGame = new HashMap<>();
     }
+
+
 }

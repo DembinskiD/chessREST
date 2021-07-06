@@ -21,4 +21,25 @@ public class Movement {
         this.target = target;
         this.movedPiece = movedPiece;
     }
+
+    public Movement(Field source, Field target, Piece movedPiece) {
+        this.movementId = UUID.randomUUID();
+        this.source = source;
+        this.target = target;
+        this.movedPiece = movedPiece;
+    }
+
+    public void setGameId(UUID gameId) {
+        this.gameId = gameId;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s from %s%s to %s%s%n",
+                movedPiece.getPieceType(),
+                Field.getLiteral(source.getX()),
+                source.getY(),
+                Field.getLiteral(target.getX()),
+                target.getY());
+    }
 }
