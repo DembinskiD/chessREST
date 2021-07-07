@@ -1,5 +1,6 @@
 package com.github.dembinskid.chessrest.elements.game;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.github.dembinskid.chessrest.elements.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@JsonFilter("playerFilter")
 public class PlayerInGame extends Player {
     UUID gameId;
     Color playerColor;
@@ -27,6 +29,4 @@ public class PlayerInGame extends Player {
     public void setGameUUID(UUID gameId) {
         this.gameId = gameId;
     }
-
-
 }
