@@ -16,6 +16,10 @@ public class PlayerInGame extends Player {
         super(name, emailAddress);
     }
 
+    public PlayerInGame(String name) {
+        super(name, "");
+    }
+
     public void setColor(Color playerColor) {
         this.playerColor = playerColor;
     }

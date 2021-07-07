@@ -9,6 +9,7 @@ import java.util.*;
 @Data
 public class Turn {
     UUID uuid;
+    int turnNumber;
     UUID gameId;
     PlayerInGame player;
     List<Movement> listOfPossibleMoves;
@@ -16,7 +17,8 @@ public class Turn {
     Date startTime;
     Date endTime;
 
-    public Turn(PlayerInGame player, UUID gameId, Board board) {
+    public Turn(int turnNumber, PlayerInGame player, UUID gameId, Board board) {
+        this.turnNumber = turnNumber;
         this.uuid = UUID.randomUUID();
         this.gameId = gameId;
         this.player = player;
@@ -48,9 +50,10 @@ public class Turn {
         return outList;
     }
 
-    public void takeMove(Movement moveTaken) {
+    public Turn takeMove(Movement moveTaken) {
         this.moveTaken = moveTaken;
         this.endTime = Calendar.getInstance().getTime();
+        return this;
     }
 }
 
