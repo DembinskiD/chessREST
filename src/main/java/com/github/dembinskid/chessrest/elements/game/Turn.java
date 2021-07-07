@@ -1,26 +1,68 @@
 package com.github.dembinskid.chessrest.elements.game;
 
+import com.github.dembinskid.chessrest.elements.gameboard.Board;
+import com.github.dembinskid.chessrest.elements.gameboard.Field;
+import lombok.Data;
+
 import java.util.*;
 
+@Data
 public class Turn {
     UUID uuid;
+    int turnNumber;
     UUID gameId;
-    Player player;
+    PlayerInGame player;
     List<Movement> listOfPossibleMoves;
     Movement moveTaken;
     Date startTime;
     Date endTime;
 
-    public Turn(Player player, UUID gameId, List<Movement> listOfPossibleMoves) {
+    public Turn(int turnNumber, PlayerInGame player, UUID gameId, Board board) {
+        this.turnNumber = turnNumber;
         this.uuid = UUID.randomUUID();
         this.gameId = gameId;
         this.player = player;
-        this.listOfPossibleMoves = listOfPossibleMoves;
+        this.listOfPossibleMoves = getPossibleMoves(player, board);
         startTime = Calendar.getInstance().getTime();
     }
 
-    public void takeMove(Movement moveTaken) {
+    private List<Movement> getPossibleMoves(PlayerInGame player, Board board) {
+        return board.getGameBoard()
+                .stream()
+                .filter(Field::isTaken)
+                .filter(field -> field.getPiece().getColor().equals(player.getPlayerColor()))
+                .map(field -> new Pair<Field, List<Field>>(field, field.getPiece().getPieceType().getPossibleMoves(board, field)))
+                .reduce(new ArrayList<Movement>(), this::getMovementFromPair, this::mixTwoLists);
+    }
+
+    private ArrayList<Movement> mixTwoLists(ArrayList<Movement> oldList, ArrayList<Movement> newList) {
+        ArrayList<Movement> outputList = new ArrayList<>(oldList);
+        outputList.addAll(newList);
+        return outputList;
+    }
+
+    private ArrayList<Movement> getMovementFromPair(ArrayList<Movement> oldList, Pair<Field, List<Field>> fieldListPair) {
+        ArrayList<Movement> outList = new ArrayList<>(oldList);
+        fieldListPair.value
+                .stream()
+                .map(val -> new Movement(gameId, fieldListPair.key, val, fieldListPair.key.getPiece()))
+                .forEach(outList::add);
+        return outList;
+    }
+
+    public Turn takeMove(Movement moveTaken) {
         this.moveTaken = moveTaken;
         this.endTime = Calendar.getInstance().getTime();
+        return this;
+    }
+}
+
+class Pair<K, V> {
+    K key;
+    V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
 }
